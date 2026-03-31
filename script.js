@@ -14,7 +14,7 @@ function makePageForEpisodes(episodeList) {
   for (let i = 0; i < episodeList.length; i++) {
     // Get the current episode
     const episode = episodeList[i];
-    // Zero pad the season and episode numbers to 2 digits
+    // Zero-pad the season and episode numbers to 2 digits
     const seasonCode = String(episode.season).padStart(2, "0");
     const episodeCode = String(episode.number).padStart(2, "0");
     // Create a new div element for the episode card
@@ -22,7 +22,9 @@ function makePageForEpisodes(episodeList) {
 
     // Fill the card with the episode's name, code, image and summary
     episodeDiv.innerHTML = ` 
-    <h3>Episode ${episode.name} - S${seasonCode}E${episodeCode}</h3>
+    <div class="episode-header">
+    <h3>${episode.name} - S${seasonCode}E${episodeCode}</h3>
+    </div>
     <img src="${episode.image.medium}" alt="${episode.name}">
     <p>${episode.summary}</p>
     `;
