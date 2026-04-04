@@ -1,7 +1,7 @@
 /* Base page styles */
 body {
   font-family: sans-serif;
-  background-color: #f5f5f5;
+  background-color: #58575f;
   margin: 0;
   padding: 20px;
 }
@@ -15,8 +15,8 @@ body {
 
 /* Individual episode card */
 .episode-card {
-  background-color: white;
-  border: 1px solid #dddddd;
+  background-color: rgb(130, 126, 139);
+  border: 1px solid #ebebeb;
   border-radius: 10px;
   padding: 15px;
   display: flex;
@@ -26,7 +26,7 @@ body {
 
 /* Bordered header section inside each card */
 .episode-header {
-  border: 2px solid black;
+  border: 2px solid rgb(242, 240, 240);
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
@@ -52,7 +52,7 @@ body {
 /* Episode summary text */
 .episode-card p {
   font-size: 0.85rem;
-  color: #333333;
+  color: #0a0a0a;
 }
 
 /* Footer TVMaze Credit */
@@ -61,4 +61,31 @@ footer {
   margin-top: 30px;
   font-size: 0.85rem;
   color: #666666;
+}
+
+#searchBar {
+  text-align: center;
+  padding: 20px;
+}
+
+#searchInput {
+  padding: 10px;
+  width: 60%;
+  max-width: 400px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+#resultsCount {
+  margin-top: 10px;
+  color: #ffcccc;
+}
+
+#episodeSelect {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
 }
