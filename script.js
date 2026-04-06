@@ -1,3 +1,8 @@
+const showSelect = document.getElementById("showSelect");
+// Store shows + cache
+let allShows = [];
+const episodeCache = {};
+
 // Get references to page elements
 const root = document.getElementById("root");
 const searchInput = document.getElementById("searchInput");
@@ -114,4 +119,80 @@ function formatEpisodeCode(season, number) {
 }
 
 // Start the app on page load
-loadEpisodes();
+async function loadShows() {
+  try {
+    const response = await fetch("https://api.tvmaze.com/shows");
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch shows");
+    }
+
+    const shows = await response.json();
+
+    // Sort alphabetically (case-insensitive)
+    allShows = shows.sort((a, b) =>
+      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+    );
+
+    populateShowDropdown(allShows);
+
+  } catch (error) {
+    root.innerHTML = "<p>❌ Failed to load shows</p>";
+    console.error(error);
+  }
+}
+function populateShowDropdown(shows) {
+  showSelect.innerHTML = `<option value="">Select a show...</option>`;
+
+  shows.forEach((show) => {
+    const option = document.createElement("option");
+    option.value = show.id;
+    option.textContent = show.name;
+    showSelect.appendChild(option);
+  });
+
+   // ✅ AUTO-LOAD FIRST SHOW
+  if (shows.length > 0) {
+    showSelect.value = shows[0].id;
+    showSelect.dispatchEvent(new Event("change"));
+  }
+}
+showSelect.addEventListener("change", async () => {
+  const showId = showSelect.value;
+
+  if (!showId) return;
+
+  // Use cache if already fetched
+  if (episodeCache[showId]) {
+    allEpisodes = episodeCache[showId];
+    populateDropdown(allEpisodes);
+    displayEpisodes(allEpisodes);
+    return;
+  }
+
+  root.innerHTML = "<p>Loading episodes... ⏳</p>";
+
+  try {
+    const response = await fetch(
+      `https://api.tvmaze.com/shows/${showId}/episodes`
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch episodes");
+    }
+
+    const episodes = await response.json();
+
+    episodeCache[showId] = episodes; // cache it
+    allEpisodes = episodes;
+
+    populateDropdown(allEpisodes);
+    displayEpisodes(allEpisodes);
+
+  } catch {
+    root.innerHTML =
+      "<p>Something went wrong loading episodes. Please try again later.</p>";
+  }
+});
+loadShows();
+
